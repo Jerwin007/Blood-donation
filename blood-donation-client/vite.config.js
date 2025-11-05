@@ -3,18 +3,16 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+  },
   server: {
     host: '0.0.0.0',
-    port: process.env.PORT || 5173,
-    allowedHosts: [
-      'blood-donation-8a46.onrender.com', // 👈 your Render domain
-    ],
+    port: 5173,
   },
   preview: {
     host: '0.0.0.0',
     port: process.env.PORT || 5173,
-    allowedHosts: [
-      'blood-donation-8a46.onrender.com', // 👈 your Render domain again
-    ],
   },
 });
