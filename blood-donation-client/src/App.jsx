@@ -1,6 +1,6 @@
 // src/App.jsx
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./app.css"; // <-- change from fullpage.css to app.css
+import "./App.css"; // <-- change from fullpage.css to app.css
 import axios from "axios";
 import { useEffect, useState } from "react";
 
