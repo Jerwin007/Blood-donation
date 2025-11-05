@@ -1,0 +1,27 @@
+/* Full viewport reset */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Make every Bootstrap container truly full width */
+.container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* App wrapper to ensure no horizontal shrink */
+.app-full {
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Tables fill width nicely */
+.table-responsive {
+  width: 100%;
+}
