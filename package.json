@@ -4,7 +4,7 @@
   "description": "Blood Donation Portal with Secure Authentication",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node node_modules/vite/bin/vite.js preview --host 0.0.0.0 --port $PORT",
     "dev": "nodemon server.js"
   },
   "keywords": [
