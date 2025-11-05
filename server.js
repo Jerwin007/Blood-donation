@@ -6,30 +6,20 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
-// ==================== ENVIRONMENT VARIABLES ====================
-require('dotenv').config(); // Add this package: npm install dotenv
-
-const PORT = process.env.PORT || 7000;  // ✅ Use Render's PORT or fallback to 7000
+// ==================== ENVIRONMENT CONFIG ====================
+const PORT = process.env.PORT || 7000;  // ✅ Render sets PORT automatically
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/bloodbank";
 const JWT_SECRET = process.env.JWT_SECRET || "blood_donation_portal_secret_key_2024";
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 // ==================== MIDDLEWARES ====================
-app.use(cors({
-  origin: FRONTEND_URL,  // ✅ Allow your frontend URL
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 // ==================== MONGODB CONNECTION ====================
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ MongoDB connected successfully"))
   .catch(err => {
     console.error("❌ MongoDB connection error:", err);
-    process.exit(1); // Exit if DB connection fails
   });
 
 // ==================== USER SCHEMA ====================
@@ -492,22 +482,26 @@ app.get("/api/statistics", authenticateToken, async (req, res) => {
   }
 });
 
-// ==================== TEST ROUTE ====================
+// ==================== HEALTH CHECK ====================
 app.get("/", (req, res) => {
   res.json({ 
     status: "success", 
     message: "🩸 Blood Donation Portal API is Running!",
-    environment: process.env.NODE_ENV || 'development'
+    timestamp: new Date().toISOString()
   });
 });
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+  res.json({ 
+    status: "ok", 
+    port: PORT,
+    mongodb: mongoose.connection.readyState === 1 ? "connected" : "disconnected"
+  });
 });
 
 // ==================== START SERVER ====================
 app.listen(PORT, '0.0.0.0', () => {  // ✅ Bind to 0.0.0.0 for Render
   console.log(`✅ Server running on port ${PORT}`);
-  console.log(`🔐 Authentication enabled with JWT`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔐 JWT Authentication enabled`);
+  console.log(`🗄️  MongoDB: ${MONGODB_URI.includes('mongodb+srv') ? 'Cloud (Atlas)' : 'Local'}`);
 });
